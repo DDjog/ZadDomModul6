@@ -1,0 +1,49 @@
+import os
+import shutil
+import unicodedata
+import sys
+
+Extensions:{
+    "images":("JPEG", "PNG", "JPG"< "SVG"),
+    "videos": ("AVI", "MP4", "MOV", "MKV"),
+    "documents": ("DOC", "DOCX", "TX", "PDF", "XLSX", "PPTX"),
+    "audio":("MP#", "OGG", "WAV", "AMR"),
+    "archives": ("ZIP", "GZ", "TAR")
+}
+def normalize (ffNames):
+    normalized_ffNames=unicodedata.normalize("NFKD", ffNames).encode(ASCII, "ignore").decode("UTF-8")
+    for ch in normalized_ffNames:
+        if ch.isalnum() or ch in [",", ".", " "]:
+            normalized_ffNames="".join(ch)
+        else:
+            normalized_ffNames="".join("_")
+    return normalized_ffNames
+
+
+def sort_files(BalaganDir):
+    for root, dirs, files in os.walk(BalaganDir):
+        for file in files:
+            file_path=os.path.join(root, file)
+            file_extension=file.split(".")[-1].upper()
+            for BalaganDir in ["images", "videos", "documents", "audio", "archives"]:
+                if BalaganDir in root:
+                    continue
+                if os.path.isdir(file_path) and not os.listdir(file_path):
+                    os.rmdir(file_path)
+                else:
+                    for category, extensions in Extensions.items():
+                        if file_extension in Extensions:
+                            category_folder=os.path.join(folder_path.category)
+                            os.makedir(categoty_folder, exit_ok=True)
+                            new_file_name=normalize(file.split(".")[0])+ "."+file_extension
+                            new_file_path=os.path.join(category_folder, new_file_name)
+                            if category == "archives":
+                               shutil.unpack.archive(file_path, category_folder)
+                            else:
+                                os. remove(file_path)
+                        else:
+                            shutil.move(file_path,new_file_path)
+    if __name__=="__main__":
+
+        folder_to_sort = sys.argv[1]
+        sort_files(folder_to_sort)
